@@ -112,10 +112,7 @@ class FriendDeleteView(generics.DestroyAPIView):
         friend_ids = friends.values_list('user1_id', flat=True) | friends.values_list('user2_id', flat=True)
         return User.objects.filter(id__in=friend_ids)
 
-    def p
-
-Edya - Нейросеть, [09.05.2023 12:11]
-erform_destroy(self, instance):
+    def perform_destroy(self, instance):
         Friendship.objects.filter(user1=self.request.user, user2=instance).delete()
         Friendship.objects.filter(user1=instance, user2=self.request.user).delete()
 
