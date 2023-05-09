@@ -1,0 +1,191 @@
+OpenAPI спецификация:
+```
+openapi: 3.0.0
+info:
+  title: Friends Service API
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      summary: Регистрация нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+              properties:
+                username:
+                  type: string
+      responses:
+        "201":
+          description: Пользователь успешно зарегистрирован
+        "400":
+          description: Невалидный запрос
+  /users/{user_id}/friend-requests:
+    post:
+      summary: Отправить заявку в друзья
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя, которому отправляется заявка
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - friend_id
+              properties:
+                friend_id:
+                  type: integer
+      responses:
+        "201":
+          description: Заявка в друзья успешно отправлена
+        "400":
+          description: Невалидный запрос
+        "404":
+          description: Пользователь с указанным ID не найден
+    get:
+      summary: Получить список входящих заявок в друзья
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя
+      responses:
+        "200":
+          description: Список входящих заявок в друзья
+        "404":
+          description: Пользователь с указанным ID не найден
+  /users/{user_id}/friend-requests/{request_id}:
+    put:
+      summary: Принять заявку в друзья
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя, который принимает заявку
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: integer
+          description: ID заявки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum: [accepted, rejected]
+      responses:
+        "200":
+          description: Заявка в друзья успешно принята/отклонена
+        "400":
+          description: Невалидный запрос
+        "404":
+          description: Пользователь или заявка с указанным ID не найдены
+    delete:
+      summary: Отклонить заявку в друзья
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя, который отклоняет заявку
+        - in: path
+          name: request_id
+          required: true
+          schema:
+            type: integer
+          description: ID заявки
+      responses:
+        "204":
+          description: Заявка в друзья успешно отклонена
+        "404":
+          description: Пользователь или заявка с указанным ID не найдены
+  /users/{user_id}/friends:
+    get:
+      summary: Получить список друзей
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя
+      responses:
+        "200":
+          description: Список друзей
+        "404":
+          description: Пользователь с указанным ID не найден
+  /users/{user_id}/friends/{friend_id}:
+    delete:
+      summary: Удалить друга из списка друзей
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя, который удаляет друга
+        - in: path
+          name: friend_id
+          required: true
+          schema:
+
+type: integer
+          description: ID друга
+      responses:
+        "204":
+          description: Друг успешно удален из списка друзей
+        "404":
+          description: Пользователь или друг с указанным ID не найдены
+  /users/{user_id}/friend-status/{friend_id}:
+    get:
+      summary: Получить статус дружбы с другим пользователем
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя
+        - in: path
+          name: friend_id
+          required: true
+          schema:
+            type: integer
+          description: ID другого пользователя
+      responses:
+        "200":
+          description: Статус дружбы
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [none, outgoing, incoming, friends]
+        "404":
+          description: Пользователь или друг с указанным ID не найдены
+```
+

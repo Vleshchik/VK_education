@@ -1,0 +1,60 @@
+Документация с примерами запуска сервиса и вызова его API:
+
+1. Установить зависимости:
+```
+pip install -r requirements.txt
+```
+
+2. Запустить миграции:
+```
+python manage.py migrate
+```
+
+3. Запустить сервер:
+```
+python manage.py runserver
+```
+
+4. Создать нового пользователя:
+```
+POST /users
+{
+  "username": "user1"
+}
+```
+
+5. Отправить заявку в друзья:
+```
+POST /users/{user_id}/friend-requests
+{
+  "friend_id": 2
+}
+```
+
+6. Получить список входящих заявок в друзья:
+```
+GET /users/{user_id}/friend-requests
+```
+
+7. Принять заявку в друзья:
+```
+PUT /users/{user_id}/friend-requests/{request_id}
+{
+  "status": "accepted"
+}
+```
+
+8. Получить список друзей:
+```
+GET /users/{user_id}/friends
+```
+
+9. Удалить друга из списка друзей:
+```
+DELETE /users/{user_id}/friends/{friend_id}
+```
+
+10. Получить статус дружбы с другим пользователем:
+```
+GET /users/{user_id}/friend-status/{friend_id}
+```
